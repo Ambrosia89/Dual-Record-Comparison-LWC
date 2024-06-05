@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>55.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Record Mapping LWC</masterLabel>
+    <description
+  >This lwc is used to compare field values of leads and contacts for the purpose of mapping.</description>
+    <targets>
+        <target>lightning__FlowScreen</target>
+        <target>lightning__RecordPage</target>
+        <target>lightning__AppPage</target>
+    </targets>
+      <targetConfigs>
+        <targetConfig targets="lightning__FlowScreen">
+        <property
+        name="leadRecord"
+        type="@salesforce/schema/Lead"
+        role="inputOnly"
+        label="Lead Record"
+      />
+        <property
+        name="accountRecord"
+        type="@salesforce/schema/Account"
+        label="Account Record"
+      />
+   <!--     <property name="updatedAccountRecord" type="@salesforce/schema/Account"  role="outputOnly" label="Updated Account Record"/>-->
+        </targetConfig>
+    </targetConfigs>  
+</LightningComponentBundle>

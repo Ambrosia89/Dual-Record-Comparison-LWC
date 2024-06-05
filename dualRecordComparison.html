@@ -1,0 +1,75 @@
+<!-- @description:
+    * This is a the HTMLtemplate for a custom LWC component that compares fields from two records from a Lead and an Account.
+    * The fields are arranged row-by-row with column and row labels.
+    * For each row, the user can select the field thye are interested in retaining/mapping.
+    * The functionality of this component is similar to the native Merge Cases feature on Salesforce.   
+    * It is a generic implementation that can be adapted for use with different records from different objects.
+@params: Input => object1 (Lead record), object2 (Account record), mappingFields (array of mapped fields), 
+          fieldsDifferent (array of different fields), description (custom description to display).
+@returns: Output => object2 (Account record) updated with selected field Mappings.
+===============================================================================================
+Version             Author              Date            Description                
+===============================================================================================
+1.0                 Ambrose Akpoyomare  09/05/2024      Initial Development
+-->
+<template>
+    <lightning-card><br/>
+    <!-- Check if differentFields is empty -->
+    <template lwc:if={hasDifferentFields}>
+        <!-- Static headers -->
+        <div class="slds-grid slds-wrap slds-m-bottom_small">
+            <div class="slds-col slds-size_1-of-3">
+                <label class="slds-text-title_bold slds-truncate">Field Label</label>
+            </div>
+            <div class="slds-col slds-size_1-of-3">
+                <label class="slds-text-title_bold slds-truncate">Lead Value</label>
+            </div>
+            <div class="slds-col slds-size_1-of-3">
+                <label class="slds-text-title_bold slds-truncate">Client Value</label>
+            </div>
+        </div>
+
+        <!-- Template rows -->
+        <template for:each={differentFields} for:item="row" for:index="index">
+            <div key={row.id} class="slds-grid slds-wrap">
+                <div class="slds-col slds-size_1-of-3">
+                    <label  class="slds-text-title_bold slds-truncate">{row.name}</label>
+                </div>
+
+                <!-- Radio button columns -->
+                <div class="slds-col slds-size_2-of-3">
+                    <fieldset  class="slds-grid slds-wrap">
+                        <div class="slds-form-element__control slds-col slds-size_1-of-2">
+                            <span class="slds-radio">
+                                <input name={row.name} id={row.leadUniqueId} type="radio" value={row.option1} onchange={handleSelected} data-option={row.leadUniqueId}/>
+                                <label class="slds-radio__label" for={row.leadUniqueId}>
+                                    <span class="slds-radio_faux"></span>
+                                    <span class="slds-form-element__label">{row.option1}</span>
+                                </label>
+                            </span>
+                        </div>
+                        <div class="slds-form-element__control slds-col slds-size_1-of-2">
+                            <span class="slds-radio">
+                                <input name={row.name} id={row.accountUniqueId} type="radio" value={row.option2} onchange={handleSelected} data-option={row.accountUniqueId}/>
+                                <label class="slds-radio__label" for={row.accountUniqueId}>
+                                    <span class="slds-radio_faux"></span>
+                                    <span class="slds-form-element__label">{row.option2}</span>
+                                </label>
+                            </span>
+                        </div>
+                    </fieldset>
+                </div>
+            </div>
+
+            <!-- Horizontal line with a unique key -->
+            <div class="slds-border_bottom slds-var-m-vertical_small" key={row.id}></div>
+        </template>
+    </template>
+    <!-- Static message if differentFields is empty -->
+    <template lwc:else>
+        <div class="slds-text-align_center slds-var-m-top_large">
+            <p class="slds-text-title_bold">There are no fields which are different that need to be compared.</p>
+        </div>
+    </template>
+    </lightning-card>
+</template>
